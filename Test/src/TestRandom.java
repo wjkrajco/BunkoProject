@@ -9,7 +9,7 @@ public class TestRandom {
         int seed = -1;
         seed = in.nextInt();
         Random rand = new Random(seed);
-        for (int i = 0; i < 18; ++i)
+        for (int i = 0; i < 79; ++i)
           System.out.print(rand.nextInt(6) + 1);
         }
 
