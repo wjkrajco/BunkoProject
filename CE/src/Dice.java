@@ -15,21 +15,23 @@ public class Dice {
     /** Creates a final int for the number dice rolled */
     public static final int NUMBER_OF_DICE = 3;
 
-    /** Creates a final int for the numbers on a dice */
-    public static final int NUMBERS_ON_DICE = 6;
-
     /** Creates an int array of the numbers on the three dice rolled*/
     private int[] diceRolls;
 
     /** Creates the int variable for the seed */
     private int seed;
 
+    /** Creates the int variable for the seed */
+    private int sides
+
     /**
-     * Dice constructor that takes in a seed for the
+     * Dice constructor that takes in a seed and number of sides for the
      * given game of Bunco
      */
-    public Dice (int seed) {
+    public Dice (int seed, int sides) {
         this.seed = seed;
+        this.sides = sides;
+
     }
 
     /**
@@ -48,9 +50,13 @@ public class Dice {
         diceRolls = new int[NUMBER_OF_DICE];
 
         for (int i = 0; i < diceRolls.length; i++) {
-            diceRolls[i] = rand.nextInt(NUMBERS_ON_DICE) + 1;
+            diceRolls[i] = rand.nextInt(this.sides) + 1;
         }
 
         return diceRolls;
+    }
+
+    public int[] getDiceRolls() {
+        return this.diceRolls;
     }
 }

@@ -18,7 +18,17 @@ public class Player {
     /** Creates a final int the points from a big bunco */
     public static final int POINTS_FOR_LITLE_BUNCO = 3;
 
-    private int pointsPlayer;
+    private int totalScore;
+
+    private int currentScore;
+
+    private int numBigBunco;
+
+    private int numLittleBunco;
+
+    private int numRoundsWon;
+
+    private String name;
 
     private boolean doAnotherTurn;
 
@@ -26,9 +36,11 @@ public class Player {
 
     private int[] rolls;
 
-    public Player (Dice dice) {
+    public Player (Dice dice, String name) {
         this.dice = dice;
-        this.pointsPlayer = 0;
+        this.name = name;
+        this.totalScore = 0;
+        this.currentScore = 0;
     }
 
     /**
@@ -38,36 +50,48 @@ public class Player {
      * @return boolean of
      *
      */
-    public int doTurn(int round) {
+    public boolean doTurn(int round) {
         doAnotherTurn = false;
+        currentScore = 0;
 
         this.rolls = dice.roll();
 
         if (checkBigBunco(round))    {
+            currentScore = POINTS_FOR_BIG_BUNCO;
             doAnotherTurn = true;
+            numBigBunco += 1;
+
         }
         else if (checkLittleBunco()) {
+            currentScore = POINTS_FOR_LITLE_BUNCO;
             doAnotherTurn = false;
+            numLittleBunco++;
         }
         else if (gotPoints(round)) {
+            //Current points added in gotPoints
             doAnotherTurn = true;
         }
         else {
             //Didn't roll Little Bunco and no dice were equal to round
+            currentScore = 0;
             doAnotherTurn = false;
         }
+
+        totalScore += currentScore;
+
+        return doAnotherTurn;
     }
 
-    private int gotPoints (int round)   {
+    private boolean gotPoints (int round)   {
         int counter = 0;
         for(int i = 0; i < this.rolls.length; i++) {
             if (rolls[i] == round) {
                 counter += 1;
             }
         }
-
         if (counter != 0)   {
             this.pointsPlayer += counter;
+            currentScore = counter;
             return true;
         }
 
@@ -95,5 +119,25 @@ public class Player {
         }
 
         return true;
+    }
+
+    public int getTotalScore() {
+        return totalScore;
+    }
+
+    public int getCurrentScore() {
+        return currentScore;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getRoundsWon() {
+        return numRoundsWon;
+    }
+
+    public void wonRound() {
+        numRoundsWon++;
     }
 }
