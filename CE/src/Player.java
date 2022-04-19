@@ -9,7 +9,6 @@ import java.util.*;
  * @author Micah Tucker
  */
 
-
 public class Player {
 
     /** Creates a final int the points from a big bunco */
@@ -18,91 +17,114 @@ public class Player {
     /** Creates a final int the points from a big bunco */
     public static final int POINTS_FOR_LITLE_BUNCO = 3;
 
+    /** Total score for Player in Bunco */
     private int totalScore;
 
+    /** Current score for Player in Bunco */
     private int currentScore;
 
+    /** Points for Big Bunco in the game */
     private int numBigBunco;
 
+    /** Points for Little Bunco in the game */
     private int numLittleBunco;
 
+    /** Total number of Rounds won by player */
     private int numRoundsWon;
 
+    /** Name of Player */
     private String name;
 
+    /** Another turn for player */
     private boolean doAnotherTurn;
 
+    /** Dice object created for game */
     private Dice dice;
 
+    /** Amount of times the dice rolls */
     private int[] rolls;
 
+    private int lastRoundScore;
+
+    /**
+    * Player method including dice and name
+    *
+    * @param dice object of dice being used
+    * @param name name of players
+    *
+    */
     public Player (Dice dice, String name) {
         this.dice = dice;
         this.name = name;
         this.totalScore = 0;
         this.currentScore = 0;
+        this.lastRoundScore = 0;
     }
 
     /**
-     * goes the the process of a plauers turn, rolling dice,
+     * Goes the the process of a plauers turn, rolling dice,
      * and adding points to the players score as needed;
-     *
-     * @return boolean of
-     *
      */
-    public boolean doTurn(int round) {
+    public void doTurn(int round) {
         doAnotherTurn = false;
-        currentScore = 0;
 
         this.rolls = dice.roll();
 
         if (checkBigBunco(round))    {
-            currentScore = POINTS_FOR_BIG_BUNCO;
+            currentScore += POINTS_FOR_BIG_BUNCO;
             doAnotherTurn = true;
-            numBigBunco += 1;
+            numBigBunco ++;
 
         }
         else if (checkLittleBunco()) {
-            currentScore = POINTS_FOR_LITLE_BUNCO;
-            doAnotherTurn = false;
+            currentScore += POINTS_FOR_LITLE_BUNCO;
             numLittleBunco++;
-        }
-        else if (gotPoints(round)) {
-            //Current points added in gotPoints
-            doAnotherTurn = true;
+
+            doAnotherTurn = false;
+            totalScore += currentScore;
+            lastRoundScore = currentScore;
+            currentScore = 0;
         }
         else {
-            //Didn't roll Little Bunco and no dice were equal to round
-            currentScore = 0;
-            doAnotherTurn = false;
+            int otherPoints = checkOtherPoints(round);
+
+            if (otherPoints >= 1) {
+                currentScore += otherPoints;
+                doAnotherTurn = true;
+            }
+            else {
+                doAnotherTurn = false;
+                totalScore += currentScore;
+                lastRoundScore = currentScore;
+                currentScore = 0;
+            }
         }
 
-        totalScore += currentScore;
 
-        return doAnotherTurn;
     }
 
-    private boolean gotPoints (int round)   {
+
+
+    /**
+    * Checks if the dice and see if it returns a single number
+    *
+    * @param round the palyers individual round
+    * @return counter checks if dice returns a single number
+    */
+    private int checkOtherPoints(int round) {
         int counter = 0;
         for(int i = 0; i < this.rolls.length; i++) {
             if (rolls[i] == round) {
                 counter += 1;
             }
         }
-        if (counter != 0)   {
-            this.pointsPlayer += counter;
-            currentScore = counter;
-            return true;
-        }
 
-        return false;
-
+        return counter;
     }
 
     private boolean checkLittleBunco() {
         for(int i = 0; i < this.rolls.length; i++) {
             if (this.rolls[i] != this.rolls[0]) {
-                this.playerPoints += POINTS_FOR_LITLE_BUNCO;
                 return false;
             }
         }
@@ -121,23 +143,76 @@ public class Player {
         return true;
     }
 
+    /**
+    *  Total score for Player in Bunco
+    *
+    * @return totalScore for player
+    */
     public int getTotalScore() {
         return totalScore;
     }
 
-    public int getCurrentScore() {
-        return currentScore;
+    /**
+    * Last Round Score for each Player in Bunco
+    *
+    * @return lastRoundScore for player
+    */
+    public int getLastRoundScore() {
+        return lastRoundScore;
     }
 
+    /**
+    * Name for each Player
+    *
+    * @return name for Player
+    */
     public String getName() {
         return name;
     }
 
+    /**
+    * The number of Rounds won byplayer
+    *
+    * @return numRoundsWon number of rounds
+    * for each player
+    */
     public int getRoundsWon() {
         return numRoundsWon;
     }
 
+    /**
+    * Getting little bunco within the game
+    *
+    * @return numLittleBunco
+    */
+    public int getLitteBunco() {
+        return numLittleBunco;
+    }
+
+    /**
+    * Getting big bunco within the game
+    *
+    * @return numBigBunco
+    */
+    public int getBigBunco() {
+        return numBigBunco;
+    }
+
+    /**
+    * The winner of each round
+    */
     public void wonRound() {
         numRoundsWon++;
+    }
+
+    /**
+    * The next turn within the game
+    */
+    public boolean doAnotherTurn() {
+        return doAnotherTurn;
+    }
+
+    public int[] getDiceRolls() {
+        return this.rolls;
     }
 }

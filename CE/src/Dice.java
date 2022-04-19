@@ -15,6 +15,8 @@ public class Dice {
     /** Creates a final int for the number dice rolled */
     public static final int NUMBER_OF_DICE = 3;
 
+    private Random rand;
+
     /** Creates an int array of the numbers on the three dice rolled*/
     private int[] diceRolls;
 
@@ -22,7 +24,7 @@ public class Dice {
     private int seed;
 
     /** Creates the int variable for the seed */
-    private int sides
+    private int sides;
 
     /**
      * Dice constructor that takes in a seed and number of sides for the
@@ -32,6 +34,12 @@ public class Dice {
         this.seed = seed;
         this.sides = sides;
 
+        if (seed != -1) {
+            rand = new Random(seed);
+        }
+        else {
+            rand = new Random();
+        }
     }
 
     /**
@@ -41,12 +49,6 @@ public class Dice {
      * @return int array of the 3 dice rolls for the current player.
      */
     public int[] roll() {
-
-        Random rand = new Random();
-        if (seed != -1) {
-            rand = new Random(this.seed);
-        }
-
         diceRolls = new int[NUMBER_OF_DICE];
 
         for (int i = 0; i < diceRolls.length; i++) {
