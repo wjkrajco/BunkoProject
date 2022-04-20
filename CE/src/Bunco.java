@@ -89,7 +89,7 @@ public class Bunco {
         System.out.println("How many players are playing?");
         System.out.print("Please enter an integer (Range 2-10): ");
 
-        while (numPlayers < MAX_PLAYERS || numPlayers > MIN_PLAYERS) {
+        while (numPlayers < MIN_PLAYERS || numPlayers > MAX_PLAYERS) {
             while (!in.hasNextInt()) {
                 in.next();
                 System.out.print("Please enter an integer (Range 2-10): ");
@@ -145,7 +145,7 @@ public class Bunco {
 
         //Plays through the seprate rounds
         for (int i = 0; i < diceSides; i++) {
-            doRound(players, i + 1, seePoints, seeDice);
+            doRound(players, i + 1, seePoints, seeDice, in);
 
 
             if (i != (diceSides - 1))  {
@@ -217,10 +217,13 @@ public class Bunco {
     * @param round the current round of the game
     * @param seePoints shows the points after each round
     * @param seeDice if dice rolls should be shown
+    * @param in A scanner that takes the input of whether
+    * a user would like to roll again
     */
-    public static void doRound(Player[] players, int round, boolean seePoints, boolean seeDice) {
+    public static void doRound(Player[] players, int round, boolean seePoints, boolean seeDice, Scanner in) {
         boolean doTurn = true;
         boolean someoneHasWon = false;
+        String rollAgainStr = "";
 
         //Runs until someone has run the round
         while (!someoneHasWon) {
@@ -228,11 +231,29 @@ public class Bunco {
             for (int i = 0; i < players.length; i++) {
                 //Runs until player doesnt get a dice combination that lets them roll again
                 while (doTurn) {
-                    players[i].doTurn(round);
-
                     if (seeDice) {
+                        System.out.print(players[i].getName() + " It is your turn to roll, would you like to roll? (y/n)");
+                        rollAgainStr = in.next();
+
+                        while (!rollAgainStr.toUpperCase().equals("Y") &&
+                                !rollAgainStr.toUpperCase().equals("N")) {
+
+                            System.out.print("Please enter y or n: ");
+                            rollAgainStr = in.next();
+                        }
+
+                        if (rollAgainStr.toUpperCase().equals("N"))    {
+                            System.exit(0);
+                        }
+                        players[i].doTurn(round);
                         System.out.println(players[i].getName() + " rolled: " +
                                             Arrays.toString(players[i].getDiceRolls()));
+                        if (seePoints)      {
+                            printScores(players);
+                        }
+                    }
+                    else    {
+                        players[i].doTurn(round);
                     }
 
                     //Checks if a current player won, and does accordingly
@@ -272,7 +293,7 @@ public class Bunco {
     /**
      * Prints the scores, buncos, etc for each player in the players list
      *
-     *  @param players array of players for the current game
+     * @param players array of players for the current game
      */
     public static void printScores(Player[] players) {
         for (int i = 0; i < players.length; i++) {
@@ -280,8 +301,8 @@ public class Bunco {
             System.out.println("Total Score: " + players[i].getTotalScore());
             System.out.println("Round Score: " + players[i].getLastRoundScore());
             System.out.println("Rounds Won: " + players[i].getRoundsWon());
-            System.out.println("Little Buncos: " + players[i].getLitteBunco());
-            System.out.println("Big Buncos: " + players[i].getBigBunco());
+            System.out.println("Total Little Buncos: " + players[i].getLitteBunco());
+            System.out.println("Total Big Buncos: " + players[i].getBigBunco());
 
             System.out.println("");
         }

@@ -55,11 +55,11 @@ public class Player {
     *
     */
     public Player (Dice dice, String name) {
-      this.dice = dice;
-      this.name = name;
-      this.totalScore = 0;
-      this.currentScore = 0;
-      this.lastRoundScore = 0;
+        this.dice = dice;
+        this.name = name;
+        this.totalScore = 0;
+        this.currentScore = 0;
+        this.lastRoundScore = 0;
     }
 
     /**
@@ -69,41 +69,39 @@ public class Player {
     * @param round the current round for the game
     */
     public void doTurn(int round) {
-      doAnotherTurn = false;
-
-      this.rolls = dice.roll();
-
-      if (checkBigBunco(round))    {
-        currentScore += POINTS_FOR_BIG_BUNCO;
-        doAnotherTurn = true;
-        numBigBunco ++;
-
-      }
-      else if (checkLittleBunco()) {
-        currentScore += POINTS_FOR_LITLE_BUNCO;
-        numLittleBunco++;
-
         doAnotherTurn = false;
-        totalScore += currentScore;
-        lastRoundScore = currentScore;
-        currentScore = 0;
-      }
-      else {
-        int otherPoints = checkOtherPoints(round);
 
-        if (otherPoints >= 1) {
-          currentScore += otherPoints;
-          doAnotherTurn = true;
+        this.rolls = dice.roll();
+
+        if (checkBigBunco(round))    {
+            currentScore += POINTS_FOR_BIG_BUNCO;
+            doAnotherTurn = true;
+            numBigBunco ++;
+
+        }
+        else if (checkLittleBunco()) {
+            currentScore += POINTS_FOR_LITLE_BUNCO;
+            numLittleBunco++;
+
+            doAnotherTurn = false;
+            totalScore += currentScore;
+            lastRoundScore = currentScore;
+            currentScore = 0;
         }
         else {
-          doAnotherTurn = false;
-          totalScore += currentScore;
-          lastRoundScore = currentScore;
-          currentScore = 0;
+            int otherPoints = checkOtherPoints(round);
+
+            if (otherPoints >= 1) {
+                currentScore += otherPoints;
+                doAnotherTurn = true;
+            }
+            else {
+                doAnotherTurn = false;
+                totalScore += currentScore;
+                lastRoundScore = currentScore;
+                currentScore = 0;
+            }
         }
-      }
-
-
     }
 
 
@@ -115,14 +113,14 @@ public class Player {
     * @return counter number of dice that matched the round number
     */
     public int checkOtherPoints(int round) {
-      int counter = 0;
-      for(int i = 0; i < this.rolls.length; i++) {
-        if (rolls[i] == round) {
-          counter += 1;
+        int counter = 0;
+        for(int i = 0; i < this.rolls.length; i++) {
+            if (rolls[i] == round) {
+                counter += 1;
+            }
         }
-      }
 
-      return counter;
+        return counter;
     }
 
     /**
@@ -131,13 +129,13 @@ public class Player {
     * @return true if all three dice have the same value
     */
     public boolean checkLittleBunco() {
-      for(int i = 0; i < this.rolls.length; i++) {
-        if (this.rolls[i] != this.rolls[0]) {
-          return false;
+        for(int i = 0; i < this.rolls.length; i++) {
+            if (this.rolls[i] != this.rolls[0]) {
+                return false;
+            }
         }
-      }
 
-      return true;
+        return true;
     }
 
     /**
@@ -148,13 +146,13 @@ public class Player {
     */
     public boolean checkBigBunco(int round) {
 
-      for(int i = 0; i < this.rolls.length; i++) {
-        if (this.rolls[i] != round) {
-          return false;
+        for(int i = 0; i < this.rolls.length; i++) {
+            if (this.rolls[i] != round) {
+                return false;
+            }
         }
-      }
 
-      return true;
+        return true;
     }
 
     /**
@@ -163,14 +161,14 @@ public class Player {
     * @return totalScore for player
     */
     public int getTotalScore() {
-      return totalScore;
+        return totalScore;
     }
 
     /**
     *  Sets player's total score to zero
     */
     public void resetTotalScore() {
-      totalScore = 0;
+        totalScore = 0;
     }
 
     /**
@@ -179,7 +177,7 @@ public class Player {
     * @return lastRoundScore for player
     */
     public int getLastRoundScore() {
-      return lastRoundScore;
+        return lastRoundScore;
     }
 
     /**
@@ -188,7 +186,7 @@ public class Player {
     * @return name for Player
     */
     public String getName() {
-      return name;
+        return name;
     }
 
     /**
@@ -198,7 +196,7 @@ public class Player {
     * for each player
     */
     public int getRoundsWon() {
-      return numRoundsWon;
+        return numRoundsWon;
     }
 
     /**
@@ -207,7 +205,7 @@ public class Player {
     * @return numLittleBunco
     */
     public int getLitteBunco() {
-      return numLittleBunco;
+        return numLittleBunco;
     }
 
     /**
@@ -216,14 +214,14 @@ public class Player {
     * @return numBigBunco
     */
     public int getBigBunco() {
-      return numBigBunco;
+        return numBigBunco;
     }
 
     /**
     * Increments the number numRoundsWon for current player
     */
     public void wonRound() {
-      numRoundsWon++;
+        numRoundsWon++;
     }
 
     /**
@@ -232,7 +230,7 @@ public class Player {
     * @return doAnotherTurn
     */
     public boolean doAnotherTurn() {
-      return doAnotherTurn;
+        return doAnotherTurn;
     }
 
     /**
@@ -241,7 +239,7 @@ public class Player {
     * @return this.rolls
     */
     public int[] getDiceRolls() {
-      return this.rolls;
+        return this.rolls;
     }
 
     /**
@@ -251,6 +249,6 @@ public class Player {
     * @param newRolls the integer set of dice rolls to have the players dice rolls set to
     */
     public void setRolls(int[] newRolls) {
-      this.rolls = newRolls;
+        this.rolls = newRolls;
     }
 }
