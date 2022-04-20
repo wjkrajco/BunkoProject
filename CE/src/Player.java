@@ -111,7 +111,7 @@ public class Player {
     * @param round the palyers individual round
     * @return counter checks if dice returns a single number
     */
-    private int checkOtherPoints(int round) {
+    public int checkOtherPoints(int round) {
         int counter = 0;
         for(int i = 0; i < this.rolls.length; i++) {
             if (rolls[i] == round) {
@@ -122,7 +122,7 @@ public class Player {
         return counter;
     }
 
-    private boolean checkLittleBunco() {
+    public boolean checkLittleBunco() {
         for(int i = 0; i < this.rolls.length; i++) {
             if (this.rolls[i] != this.rolls[0]) {
                 return false;
@@ -132,7 +132,7 @@ public class Player {
         return true;
     }
 
-    private boolean checkBigBunco(int round) {
+    public boolean checkBigBunco(int round) {
 
         for(int i = 0; i < this.rolls.length; i++) {
             if (this.rolls[i] != round) {
@@ -150,6 +150,13 @@ public class Player {
     */
     public int getTotalScore() {
         return totalScore;
+    }
+
+    /**
+    *  Sets player's total score to zero
+    */
+    public void resetTotalScore() {
+        totalScore = 0;
     }
 
     /**
@@ -214,5 +221,9 @@ public class Player {
 
     public int[] getDiceRolls() {
         return this.rolls;
+    }
+
+    public void setRolls(int[] newRolls) {
+        this.rolls = newRolls;
     }
 }

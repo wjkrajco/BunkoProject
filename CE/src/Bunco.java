@@ -102,7 +102,7 @@ public class Bunco {
             seeDiceStr = in.next();
         }
 
-        if (seeDiceStr.equals("Y"))    {
+        if (seeDiceStr.toUpperCase().equals("Y"))    {
             seeDice = true;
         }
         else {
@@ -129,7 +129,7 @@ public class Bunco {
 
         //Plays through the seprate rounds
         for (int i = 0; i < diceSides; i++) {
-            doRound(players, i + 1, seePoints);
+            doRound(players, i + 1, seePoints, seeDice);
 
 
             if (i != (diceSides - 1))  {
@@ -148,10 +148,21 @@ public class Bunco {
             }
         }
 
-        System.out.println("No one reached 21 points so every one has lost :( ");
-        System.out.println("Break down of game: ");
-        printScores(players);
 
+        int indexOfWinner = 0;
+        for (int i = 0; i < players.length; i++)    {
+            if (players[i].getRoundsWon() > players[indexOfWinner].getRoundsWon()) {
+                indexOfWinner = i;
+
+            }
+        }
+
+        System.out.println("You have finished the game and "
+                          + players[indexOfWinner].getName() + " has won the most rounds with "
+                          + players[indexOfWinner].getRoundsWon() + " wins " );
+
+        System.out.println("");
+        System.out.println("");
     }
 
     /**
@@ -189,26 +200,36 @@ public class Bunco {
     * @param round the current round of the game
     * @param seePoints shows the points after each round
     */
-    public static void doRound(Player[] players, int round, boolean seePoints) {
+    public static void doRound(Player[] players, int round, boolean seePoints, boolean seeDice) {
         boolean doTurn = true;
         boolean someoneHasWon = false;
 
-        //Runs for each player, doing their turn until they roll something that stops them from
-        //continuing
+        //Runs until someone has run the round
         while (!someoneHasWon) {
+            //Runs for each player having them roll until they can't
             for (int i = 0; i < players.length; i++) {
+                //Runs until player doesnt get a dice combination that lets them roll again
                 while (doTurn) {
                     players[i].doTurn(round);
-                    System.out.println(players[i].getName() + " rolled: " + Arrays.toString(players[i].getDiceRolls()));
+
+                    if (seeDice) {
+                        System.out.println(players[i].getName() + " rolled: " + Arrays.toString(players[i].getDiceRolls()));
+                    }
 
                     //Checks if a current player won, and does accordingly
                     if (players[i].getTotalScore() >= 21)  {
                         players[i].wonRound();
                         doTurn = false;
                         someoneHasWon = true;
-                        System.out.println("Congradulations " + players[i].getName() + " You reached 21 or more points and have won the round " + round +  "!!!");
-                        System.out.println("Break down of game: ");
-                        printScores(players);
+                        System.out.println("Congradulations " + players[i].getName() + " has won round " + round +  "!!!");
+                        //Prints out points for each player if they said yes to it earlier.
+                        if (seePoints)  {
+                            System.out.println("");
+                            System.out.println("Break down of game after round " + round + ":");
+
+                            printScores(players);
+                        }
+
                         break;
                     }
 
@@ -216,19 +237,14 @@ public class Bunco {
                 }
 
                 if (someoneHasWon)  {
+                    for (int j = 0; j < players.length; j++)  {
+                        players[j].resetTotalScore();
+                    }
                     break;
                 }
 
                 doTurn = true;
             }
-        }
-
-        //Prints out points for each player if they said yes to it earlier.
-        if (seePoints)  {
-            System.out.println("");
-            System.out.println("Break down of round:");
-
-            printScores(players);
         }
     }
 
