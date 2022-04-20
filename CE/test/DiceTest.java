@@ -1,6 +1,5 @@
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.Arrays;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,38 +10,46 @@ import org.junit.jupiter.api.Test;
  * @author Shiv Patel
  * @author Micah Tucker
  */
- public class DiceTest    {
+public class DiceTest {
 
-     /** dice instance for testing */
-     private Dice dice;
+    /** dice instance for testing */
+    private Dice dice;
 
-     private String expDiceRolls;
+    /** Expected roll values after rolling seed 1 for the first time */
+    private String expDiceRolls;
 
-     public static final int SIDES_OF_DICE = 6;
+    /** Number of sides on a dice for creating dice */
+    public static final int SIDES_ON_DICE = 6;
 
+    /**
+    * Sets up a set of dice to be used for testing, seed 1, SIDES_ON_DICE sides
+    */
+    @BeforeEach
+    public void setUp()    {
+        dice = new Dice(1, SIDES_ON_DICE);
+        expDiceRolls = "[4, 5, 2]";
+    }
 
+     /**
+      * Tests the get rolls method
+      */
+    @Test
+    public void testGetRolls() {
+        dice.roll();
+        int[] diceRolls = dice.getDiceRolls();
 
-     @BeforeEach
-     public void setUp()    {
-         dice = new Dice(1, 6);
-         expDiceRolls = "[4, 5, 2]";
-     }
+        assertEquals(expDiceRolls, Arrays.toString(diceRolls),
+                      "Dice Rolled with seed 1, giving [4, 5, 2]");
+    }
 
+    /**
+     * tests the rolling method given the seed 1
+     */
+    @Test
+    public void testRoll() {
+        int[] diceRolls = dice.roll();
 
-
-
-     @Test
-     public void testGetRolls() {
-          dice.roll();
-          int[] diceRolls = dice.getDiceRolls();
-
-          assertEquals(expDiceRolls, Arrays.toString(diceRolls), "Dice Rolled with seed 1, giving [4, 5, 2]");
-     }
-
-     @Test
-     public void testRoll() {
-         int[] diceRolls = dice.roll();
-
-         assertEquals(expDiceRolls, Arrays.toString(diceRolls), "Dice Rolled with seed 1, giving [4, 5, 2]");
-     }
+        assertEquals(expDiceRolls, Arrays.toString(diceRolls),
+                      "Dice Rolled with seed 1, giving [4, 5, 2]");
+    }
 }

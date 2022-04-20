@@ -11,18 +11,34 @@ import java.util.*;
 
 public class Bunco {
 
+    /** Maximum sides allowed on dice */
+    public static final int MAX_SIDES_ON_DICE = 26;
+
+    /** Minimum sides allowed on dice */
+    public static final int MIN_SIDES_ON_DICE = 6;
+
+    /** Maximum allowed players */
+    public static final int MAX_PLAYERS = 10;
+
+    /** Minimum allowed players */
+    public static final int MIN_PLAYERS = 2;
+
+    /** Minimum score required to win Bunco */
+    public static final int SCORE_REQUIRED_TO_WIN = 21;
+
     /**
     * Prompts the user with a series of questions
     * First question is the number of sides on
-    * the dice are needed
+    * the dice being used
     * Second question how many players in the game
     * Next if you want to see the dice being rolled
     * Also the next question is asking if the
     * players want to see there score for each round.
     *
-    * @param args command-line parameters (not used)
+    * @param args args[0] used for dice seed
     */
     public static void main(String[] args) {
+
         int numPlayers = -1;
         int diceSides = -1;
         int seed = -1;
@@ -52,7 +68,7 @@ public class Bunco {
         System.out.println("What sided die do you want to play with?");
         System.out.print("Please enter an integer (Range 6-26): ");
 
-        while (diceSides < 6 || diceSides > 26) {
+        while (diceSides < MIN_SIDES_ON_DICE || diceSides > MAX_SIDES_ON_DICE) {
             while (!in.hasNextInt()) {
                 in.next();
                 System.out.print("Please enter an integer (Range 6-26): ");
@@ -60,7 +76,7 @@ public class Bunco {
 
             diceSides = in.nextInt();
 
-            if (diceSides < 6 || diceSides > 26) {
+            if (diceSides < MIN_SIDES_ON_DICE || diceSides > MAX_SIDES_ON_DICE) {
                 System.out.print("Please enter an integer (Range 6-26): ");
             }
         }
@@ -73,7 +89,7 @@ public class Bunco {
         System.out.println("How many players are playing?");
         System.out.print("Please enter an integer (Range 2-10): ");
 
-        while (numPlayers < 2 || numPlayers > 10) {
+        while (numPlayers < MAX_PLAYERS || numPlayers > MIN_PLAYERS) {
             while (!in.hasNextInt()) {
                 in.next();
                 System.out.print("Please enter an integer (Range 2-10): ");
@@ -81,7 +97,7 @@ public class Bunco {
 
             numPlayers = in.nextInt();
 
-            if (numPlayers < 2 || numPlayers > 10) {
+            if (numPlayers < MIN_PLAYERS || numPlayers > MAX_PLAYERS) {
                 System.out.print("Please enter an integer (Range 2-10): ");
             }
         }
@@ -137,7 +153,9 @@ public class Bunco {
                 System.out.print("Do you wish to play another round? (y/n)");
                 continueRoundStr = in.next();
 
-                while (!continueRoundStr.toUpperCase().equals("Y") && !continueRoundStr.toUpperCase().equals("N")) {
+                while (!continueRoundStr.toUpperCase().equals("Y") &&
+                        !continueRoundStr.toUpperCase().equals("N")) {
+
                     System.out.print("Please enter y or n: ");
                     continueRoundStr = in.next();
                 }
@@ -166,12 +184,13 @@ public class Bunco {
     }
 
     /**
-    * Assigns the dice withe the appropriate players
+    * Creates an array of Players assigned with the correct dice object, as well
+    * as asking for the names of each player
     *
-    * @param in input from the user
+    * @param in console input from the user
     * @param numPlayers the number of players
-    * @param dice object created to roll for the game
-    * @return players objects
+    * @param dice object for each player to roll for the game
+    * @return Array of player objects
     */
     public static Player[] makePlayers(Scanner in, int numPlayers, Dice dice) {
         String name = "";
@@ -182,8 +201,6 @@ public class Bunco {
         for (int i = 0; i < numPlayers; i++) {
 
             System.out.print("Player " + (i + 1) + " name: ");
-
-            //Get to work for names with spaces First Last name situations
 
             name = in.nextLine();
 
@@ -196,9 +213,10 @@ public class Bunco {
     /**
     * Rounds for each player
     *
-    * @param players the names of players
+    * @param players array of player objects
     * @param round the current round of the game
     * @param seePoints shows the points after each round
+    * @param seeDice if dice rolls should be shown
     */
     public static void doRound(Player[] players, int round, boolean seePoints, boolean seeDice) {
         boolean doTurn = true;
@@ -213,15 +231,18 @@ public class Bunco {
                     players[i].doTurn(round);
 
                     if (seeDice) {
-                        System.out.println(players[i].getName() + " rolled: " + Arrays.toString(players[i].getDiceRolls()));
+                        System.out.println(players[i].getName() + " rolled: " +
+                                            Arrays.toString(players[i].getDiceRolls()));
                     }
 
                     //Checks if a current player won, and does accordingly
-                    if (players[i].getTotalScore() >= 21)  {
+                    if (players[i].getTotalScore() >= SCORE_REQUIRED_TO_WIN)  {
                         players[i].wonRound();
                         doTurn = false;
                         someoneHasWon = true;
-                        System.out.println("Congradulations " + players[i].getName() + " has won round " + round +  "!!!");
+                        System.out.println("Congradulations " + players[i].getName() +
+                                            " has won round " + round +  "!!!");
+
                         //Prints out points for each player if they said yes to it earlier.
                         if (seePoints)  {
                             System.out.println("");
@@ -248,6 +269,11 @@ public class Bunco {
         }
     }
 
+    /**
+     * Prints the scores, buncos, etc for each player in the players list
+     *
+     *  @param players array of players for the current game
+     */
     public static void printScores(Player[] players) {
         for (int i = 0; i < players.length; i++) {
             System.out.println(players[i].getName() + ": ");

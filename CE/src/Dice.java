@@ -15,20 +15,24 @@ public class Dice {
     /** Creates a final int for the number dice rolled */
     public static final int NUMBER_OF_DICE = 3;
 
+    /** The random variable for generating dice rolls */
     private Random rand;
 
-    /** Creates an int array of the numbers on the three dice rolled*/
+    /** Creates an int array for the numbers on the three dice rolled*/
     private int[] diceRolls;
 
     /** Creates the int variable for the seed */
     private int seed;
 
-    /** Creates the int variable for the seed */
+    /** Creates the int variable for the dice sides */
     private int sides;
 
     /**
      * Dice constructor that takes in a seed and number of sides for the
      * given game of Bunco
+     *
+     * @param seed the seed for random generation
+     * @param sides the number of sides on a dice
      */
     public Dice (int seed, int sides) {
         this.seed = seed;
@@ -43,7 +47,7 @@ public class Dice {
     }
 
     /**
-     * Rolls three dice valued 1-6, and returns them in a
+     * Rolls three dice valued on a range 6-26 depending on user input, and returns them in a
      * int array of length 3.
      *
      * @return int array of the 3 dice rolls for the current player.
@@ -58,6 +62,11 @@ public class Dice {
         return diceRolls;
     }
 
+    /**
+     * Returns the last rolled dice
+     *
+     * @return the set of last rolled dice
+     */
     public int[] getDiceRolls() {
         return this.diceRolls;
     }
