@@ -77,6 +77,9 @@ public class Player {
             currentScore += POINTS_FOR_BIG_BUNCO;
             doAnotherTurn = true;
             numBigBunco ++;
+            if (totalRoundScore >= 21)  {
+                doAnotherTurn = false;
+            }
 
         }
         else if (checkLittleBunco()) {
@@ -94,6 +97,9 @@ public class Player {
             if (otherPoints >= 1) {
                 currentScore += otherPoints;
                 doAnotherTurn = true;
+                if (totalRoundScore >= 21)  {
+                    doAnotherTurn = false;
+                }
             }
             else {
                 doAnotherTurn = false;
