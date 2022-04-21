@@ -20,9 +20,6 @@ public class Player {
     /** Total score for Player in Bunco */
     private int totalRoundScore;
 
-    /** Current score for Player in Bunco */
-    private int currentScore;
-
     /** number of Big Bunco in the game */
     private int numBigBunco;
 
@@ -58,7 +55,6 @@ public class Player {
         this.dice = dice;
         this.name = name;
         this.totalRoundScore = 0;
-        this.currentScore = 0;
         this.totalScore = 0;
     }
 
@@ -74,7 +70,8 @@ public class Player {
         this.rolls = dice.roll();
 
         if (checkBigBunco(round))    {
-            currentScore += POINTS_FOR_BIG_BUNCO;
+            totalRoundScore += POINTS_FOR_BIG_BUNCO;
+            totalScore += POINTS_FOR_BIG_BUNCO;
             doAnotherTurn = true;
             numBigBunco ++;
             if (totalRoundScore >= 21)  {
@@ -83,19 +80,18 @@ public class Player {
 
         }
         else if (checkLittleBunco()) {
-            currentScore += POINTS_FOR_LITLE_BUNCO;
+            totalRoundScore += POINTS_FOR_LITLE_BUNCO;
+            totalScore += POINTS_FOR_LITLE_BUNCO;
             numLittleBunco++;
 
             doAnotherTurn = false;
-            totalRoundScore += currentScore;
-            totalScore += currentScore;
-            currentScore = 0;
         }
         else {
             int otherPoints = checkOtherPoints(round);
 
             if (otherPoints >= 1) {
-                currentScore += otherPoints;
+                totalRoundScore += otherPoints;
+                totalScore += otherPoints;
                 doAnotherTurn = true;
                 if (totalRoundScore >= 21)  {
                     doAnotherTurn = false;
@@ -103,9 +99,6 @@ public class Player {
             }
             else {
                 doAnotherTurn = false;
-                totalRoundScore += currentScore;
-                totalScore += currentScore;
-                currentScore = 0;
             }
         }
     }
