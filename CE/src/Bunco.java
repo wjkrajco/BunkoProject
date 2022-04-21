@@ -235,7 +235,7 @@ public class Bunco {
                 while (doTurn) {
                     if (seeDice) {
                         System.out.print(players[i].getName() +
-                            " It is your turn to roll, would you like to roll? (y/n)");
+                            " It is your turn to roll, would you like to roll? (y/n): ");
                         rollAgainStr = in.next();
 
                         while (!rollAgainStr.toUpperCase().equals("Y") &&
