@@ -169,15 +169,15 @@ public class Bunco {
 
         int indexOfWinner = 0;
         for (int i = 0; i < players.length; i++)    {
-            if (players[i].getRoundsWon() > players[indexOfWinner].getRoundsWon()) {
+            if (players[i].getTotalScore() > players[indexOfWinner].getTotalScore()) {
                 indexOfWinner = i;
 
             }
         }
 
         System.out.println("You have finished the game and "
-                          + players[indexOfWinner].getName() + " has won the most rounds with "
-                          + players[indexOfWinner].getRoundsWon() + " wins " );
+                          + players[indexOfWinner].getName() + " has won having earned "
+                          + players[indexOfWinner].getTotalScore() + " points " );
 
         System.out.println("");
         System.out.println("");
@@ -220,7 +220,9 @@ public class Bunco {
     * @param in A scanner that takes the input of whether
     * a user would like to roll again
     */
-    public static void doRound(Player[] players, int round, boolean seePoints, boolean seeDice, Scanner in) {
+    public static void doRound(Player[] players, int round,
+        boolean seePoints, boolean seeDice, Scanner in) {
+
         boolean doTurn = true;
         boolean someoneHasWon = false;
         String rollAgainStr = "";
@@ -232,7 +234,8 @@ public class Bunco {
                 //Runs until player doesnt get a dice combination that lets them roll again
                 while (doTurn) {
                     if (seeDice) {
-                        System.out.print(players[i].getName() + " It is your turn to roll, would you like to roll? (y/n)");
+                        System.out.print(players[i].getName() +
+                            " It is your turn to roll, would you like to roll? (y/n)");
                         rollAgainStr = in.next();
 
                         while (!rollAgainStr.toUpperCase().equals("Y") &&
@@ -257,11 +260,11 @@ public class Bunco {
                     }
 
                     //Checks if a current player won, and does accordingly
-                    if (players[i].getTotalScore() >= SCORE_REQUIRED_TO_WIN)  {
+                    if (players[i].getTotalRoundScore() >= SCORE_REQUIRED_TO_WIN)  {
                         players[i].wonRound();
                         doTurn = false;
                         someoneHasWon = true;
-                        System.out.println("Congradulations " + players[i].getName() +
+                        System.out.println("Congratulations " + players[i].getName() +
                                             " has won round " + round +  "!!!");
 
                         //Prints out points for each player if they said yes to it earlier.
@@ -280,7 +283,7 @@ public class Bunco {
 
                 if (someoneHasWon)  {
                     for (int j = 0; j < players.length; j++)  {
-                        players[j].resetTotalScore();
+                        players[j].resetTotalRoundScore();
                     }
                     break;
                 }
@@ -299,7 +302,7 @@ public class Bunco {
         for (int i = 0; i < players.length; i++) {
             System.out.println(players[i].getName() + ": ");
             System.out.println("Total Score: " + players[i].getTotalScore());
-            System.out.println("Round Score: " + players[i].getLastRoundScore());
+            System.out.println("Current Round Score: " + players[i].getTotalRoundScore());
             System.out.println("Rounds Won: " + players[i].getRoundsWon());
             System.out.println("Total Little Buncos: " + players[i].getLitteBunco());
             System.out.println("Total Big Buncos: " + players[i].getBigBunco());

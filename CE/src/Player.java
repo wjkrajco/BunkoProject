@@ -18,7 +18,7 @@ public class Player {
     public static final int POINTS_FOR_LITLE_BUNCO = 3;
 
     /** Total score for Player in Bunco */
-    private int totalScore;
+    private int totalRoundScore;
 
     /** Current score for Player in Bunco */
     private int currentScore;
@@ -44,8 +44,8 @@ public class Player {
     /** The dice values for the last roll */
     private int[] rolls;
 
-    /** the score for the last round */
-    private int lastRoundScore;
+    /** The total of all values scored */
+    private int totalScore;
 
     /**
     * Player constructor including dice and name
@@ -57,9 +57,9 @@ public class Player {
     public Player (Dice dice, String name) {
         this.dice = dice;
         this.name = name;
-        this.totalScore = 0;
+        this.totalRoundScore = 0;
         this.currentScore = 0;
-        this.lastRoundScore = 0;
+        this.totalScore = 0;
     }
 
     /**
@@ -84,8 +84,8 @@ public class Player {
             numLittleBunco++;
 
             doAnotherTurn = false;
+            totalRoundScore += currentScore;
             totalScore += currentScore;
-            lastRoundScore = currentScore;
             currentScore = 0;
         }
         else {
@@ -97,8 +97,8 @@ public class Player {
             }
             else {
                 doAnotherTurn = false;
+                totalRoundScore += currentScore;
                 totalScore += currentScore;
-                lastRoundScore = currentScore;
                 currentScore = 0;
             }
         }
@@ -156,28 +156,28 @@ public class Player {
     }
 
     /**
-    * Total score for Player in Bunco
+    * Total round score for Player in Bunco
     *
-    * @return totalScore for player
+    * @return totalRoundScore for player
     */
-    public int getTotalScore() {
-        return totalScore;
+    public int getTotalRoundScore() {
+        return totalRoundScore;
     }
 
     /**
     *  Sets player's total score to zero
     */
-    public void resetTotalScore() {
-        totalScore = 0;
+    public void resetTotalRoundScore() {
+        totalRoundScore = 0;
     }
 
     /**
-    * Last Round Score for each Player in Bunco
+    * Total score for the player in Bunco
     *
-    * @return lastRoundScore for player
+    * @return returns a players total score
     */
-    public int getLastRoundScore() {
-        return lastRoundScore;
+    public int getTotalScore() {
+        return totalScore;
     }
 
     /**
